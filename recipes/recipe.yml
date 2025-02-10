@@ -12,28 +12,18 @@ image-version: 41 # latest is also supported if you want new updates ASAP
 # module configuration, executed in order
 # you can include multiple instances of the same module
 modules:
+  - from-file: ../modules/sddm-module.yml
   - type: files
     files:
       - source: system
         destination: / # copies files/system/* (* means everything inside it) into your image's root folder /
-  - type: systemd
-      system:
-        enabled:
-          - sddm-boot.service
   - type: rpm-ostree
     install:
       - micro
     remove:
       # example: removing firefox (in favor of the flatpak)
       # "firefox" is the main package, "firefox-langpacks" is a dependenc
-      # also remove firefox dependency (not required for all packages, this is a special case)
-      - sddm
-      - sddm-themes
-      - qt5-qtgraphicaleffects
-      - qt5-qtquickcontrols2
-      - qt5-qtsvg
-      - kwallet
-      - pam-kwallet
+      # also remove firefox dependency (not required for all packages, this is a special case
       - @xfce-desktop-environment
   - type: default-flatpaks
     notify: true # Send notification after install/uninstall is finished (true/false)
@@ -41,7 +31,6 @@ modules:
       # If no repo information is specified, Flathub will be used by default
       install:
         - org.mozilla.firefox
-        - org.gnome.Loupe
       remove:
         - org.gnome.eog
     user: {} # Also add Flathub user repo, but no user packages
